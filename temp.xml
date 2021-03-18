@@ -1,21 +1,9 @@
 
-<p:students xmlns:p="http://www.example.com/students"	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"	xsi:schemaLocation="http://www.example.com/students students2.xsd ">	
-<student login="aaaaaa">		
-<name>name</name>		
-<telephone>0</telephone>		
-<address>			
-<country>country</country>			
-<city>city</city>			
-<street>street</street>		
-</address>	
-</student>	
-<student login="bbbbbb">		
-<name>name</name>		
-<telephone>0</telephone>		
-<address>			
-<country>country</country>			
-<city>city</city>			
-<street>street</street>		
-</address>	
-</student>
-</p:students>
+<tc:notes     xmlns:tc="http://www.epam.tc.com/note"	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"	xsi:schemaLocation="http://www.epam.tc.com/note notes.xsd">	
+<note id="1">		
+<to>Вася</to>		
+<from>Света</from>		
+<heading>Напоминание</heading>  		
+<body>Позвони мне завтра!</body>	
+</note>	
+</tc:notes>

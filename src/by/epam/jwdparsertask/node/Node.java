@@ -31,4 +31,14 @@ public class Node {
     public void addChildNode(Node node) {
         nodes.add(node);
     }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "name='" + name + '\'' +
+                ", attributes=" + attributes +
+                ", nodes=" + nodes +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }
