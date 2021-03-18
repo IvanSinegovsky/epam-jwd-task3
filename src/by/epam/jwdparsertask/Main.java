@@ -7,9 +7,11 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        XmlFileRedactor.redactXmlFile(
+        XmlFileRedactor xmlFileRedactor = new XmlFileRedactor();
+
+        xmlFileRedactor.redactXmlFile(
                 new File(
-                        "C:\\Users\\Пользователь\\IdeaProjects\\epam-jwd-task3\\notes.xml"
+                        "C:\\Users\\Пользователь\\IdeaProjects\\epam-jwd-task3\\students2.xml"
                 )
         );
     }

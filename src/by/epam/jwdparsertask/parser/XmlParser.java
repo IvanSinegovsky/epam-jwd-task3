@@ -11,7 +11,9 @@ import java.util.List;
 public class XmlParser implements Parser {
 
     public static String parse(File file) throws IOException {
-        XmlFileRedactor.redactXmlFile(file);
+        XmlFileRedactor xmlFileRedactor = new XmlFileRedactor();
+
+        xmlFileRedactor.redactXmlFile(file);
 
         return null;
     }
