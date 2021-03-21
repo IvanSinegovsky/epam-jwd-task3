@@ -1,6 +1,4 @@
-package by.epam.jwdparsertask.node;
-
-import by.epam.jwdparsertask.attribute.Attribute;
+package by.epam.jwdparsertask.model;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package by.epam.jwdparsertask.attribute;
+package by.epam.jwdparsertask.model;
 
 public class Attribute {
 

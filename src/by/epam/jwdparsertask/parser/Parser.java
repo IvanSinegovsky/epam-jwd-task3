@@ -1,6 +1,6 @@
 package by.epam.jwdparsertask.parser;
 
-import by.epam.jwdparsertask.node.Node;
+import by.epam.jwdparsertask.model.Node;
 
 import java.io.File;
 import java.io.IOException;

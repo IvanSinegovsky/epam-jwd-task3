@@ -1,7 +1,7 @@
 package by.epam.jwdparsertask.parser;
 
-import by.epam.jwdparsertask.attribute.Attribute;
-import by.epam.jwdparsertask.node.Node;
+import by.epam.jwdparsertask.model.Attribute;
+import by.epam.jwdparsertask.model.Node;
 import by.epam.jwdparsertask.refactorer.XmlFileRedactor;
 
 import java.io.*;
@@ -36,7 +36,6 @@ public class XmlParser implements Parser {
         }
 
         bufferedReader.close();
-        fileReader.close();
 
         return fileLines;
     }
