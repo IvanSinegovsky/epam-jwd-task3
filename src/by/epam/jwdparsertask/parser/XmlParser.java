@@ -1,20 +1,27 @@
 package by.epam.jwdparsertask.parser;
 
+import by.epam.jwdparsertask.dao.FileDao;
 import by.epam.jwdparsertask.model.Attribute;
 import by.epam.jwdparsertask.model.Node;
-import by.epam.jwdparsertask.refactorer.XmlFileRedactor;
+import by.epam.jwdparsertask.editor.XmlFileEditor;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class XmlParser implements Parser {
 
-    public Node parse(File file) throws IOException {
+    private File file;
+    private FileDao fileDao;
+
+    public XmlParser(File file) {
+        this.file = file;
+    }
+
+    public Node parse() throws IOException {
+
         Node rootNode;
 
-        XmlFileRedactor xmlFileRedactor = new XmlFileRedactor();
-        xmlFileRedactor.redactXmlFile(file);
+        redactFile();
 
         List<String> fileLines = readFileByTheLine(file);
         rootNode = linesListToNode(fileLines);
@@ -22,22 +29,9 @@ public class XmlParser implements Parser {
         return rootNode;
     }
 
-    private List<String> readFileByTheLine (File file) throws IOException {
-        List<String> fileLines = new ArrayList<>(50);
-
-        FileReader fileReader = new FileReader(file);
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-
-        String line = bufferedReader.readLine();
-
-        while (line != null) {
-            fileLines.add(line);
-            line = bufferedReader.readLine();
-        }
-
-        bufferedReader.close();
-
-        return fileLines;
+    private void redactFile() throws IOException {
+        XmlFileEditor xmlFileEditor = new XmlFileEditor();
+        xmlFileEditor.editFile(file);
     }
 
     private Node linesListToNode(List<String> fileLines) {
@@ -66,43 +60,15 @@ public class XmlParser implements Parser {
     }
 
     private String getNameFromTag(String tag) {
-        if (tag.contains(" ")) {
-            tag = tag.substring(1, tag.indexOf(' '));
-        } else {
-            tag = tag.substring(1, tag.indexOf('>'));
-        }
-
-        return tag;
+        return null;
     }
 
     private boolean isEndTag(String tagName) {
-        if (tagName.charAt(1) == '/') {
-            return true;
-        }
-
         return false;
     }
 
     private List<Attribute> getAttributesFromTag(String tag) {
-        int attributesQuantity = attributesQuantity(tag);
-        List<Attribute> attributes = new ArrayList<>(attributesQuantity);
-
-        int attributeBegins = tag.indexOf(' ');
-        int attributeEnds = tag.length() - 1;
-
-        String tagPart = tag.substring(attributeBegins + 1, attributeEnds);
-
-        attributeEnds = tagPart.indexOf(' ');
-
-        for (int i = 0; i < attributesQuantity; i++) {
-            attributes.add(getAttribute(tagPart.substring(0, attributeEnds)));
-
-            attributeBegins = attributeEnds;
-            tagPart = tag.substring(attributeBegins, tag.length() - 1);
-            attributeEnds = tagPart.indexOf(' ');
-        }
-
-        return attributes;
+        return null;
     }
 
     private int attributesQuantity(String tag) {
@@ -124,5 +90,13 @@ public class XmlParser implements Parser {
         Attribute attribute = new Attribute(attributeName, attributeValue);
 
         return attribute;
+    }
+
+    public void close() throws IOException {
+        ///////////
+    }
+
+    public void setFile(File file) {
+        this.file = file;
     }
 }
