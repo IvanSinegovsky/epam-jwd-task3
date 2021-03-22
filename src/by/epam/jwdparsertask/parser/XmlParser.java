@@ -1,8 +1,9 @@
 package by.epam.jwdparsertask.parser;
 
 import by.epam.jwdparsertask.dao.FileDao;
-import by.epam.jwdparsertask.model.Attribute;
-import by.epam.jwdparsertask.model.Node;
+import by.epam.jwdparsertask.dao.XmlFileDao;
+import by.epam.jwdparsertask.entity.Attribute;
+import by.epam.jwdparsertask.entity.Node;
 import by.epam.jwdparsertask.editor.XmlFileEditor;
 
 import java.io.*;
@@ -15,85 +16,32 @@ public class XmlParser implements Parser {
 
     public XmlParser(File file) {
         this.file = file;
+        this.fileDao = new XmlFileDao(file);
     }
 
     public Node parse() throws IOException {
-
         Node rootNode;
 
-        redactFile();
-
-        List<String> fileLines = readFileByTheLine(file);
-        rootNode = linesListToNode(fileLines);
+        fileDao.setFile(redactFile());
+        rootNode = linesListToNode(fileDao.getLines());
 
         return rootNode;
     }
 
-    private void redactFile() throws IOException {
+    private File redactFile() throws IOException {
         XmlFileEditor xmlFileEditor = new XmlFileEditor();
         xmlFileEditor.editFile(file);
+
+        return xmlFileEditor.getTempXmlFile();
     }
 
-    private Node linesListToNode(List<String> fileLines) {
-        Node rootElement = new Node(getNameFromTag(fileLines.get(0)));
-        Node previousNode = new Node(getNameFromTag(fileLines.get(1)), getAttributesFromTag(fileLines.get(1)));
-
-        boolean isDeepInto = true;
-
-        for (int i = 0; !isEndTag(rootElement.getName()); i++) {
-            if (isDeepInto = true) {
-                rootElement.addChildNode(previousNode);
-            }
-
-            if (previousNode.getContent().equals(null)) {
-                isDeepInto = true;
-            }
-
-            if (isEndTag(previousNode.getName())) {
-                isDeepInto = false;
-            }
-
-            previousNode = new Node(getNameFromTag(fileLines.get(i)), getAttributesFromTag(fileLines.get(i)));
-        }
-
-        return rootElement;
-    }
-
-    private String getNameFromTag(String tag) {
+    private Node linesListToNode(List<String> lines) {
         return null;
     }
 
-    private boolean isEndTag(String tagName) {
-        return false;
-    }
-
-    private List<Attribute> getAttributesFromTag(String tag) {
-        return null;
-    }
-
-    private int attributesQuantity(String tag) {
-        int attributesQuantity = 0;
-
-        for (int i = 0; i < tag.length(); i++) {
-            if (tag.charAt(i) == '=') {
-                attributesQuantity++;
-            }
-        }
-
-        return attributesQuantity;
-    }
-
-    private Attribute getAttribute(String tagPart) {
-        String attributeName = tagPart.substring(0, '=');
-        String attributeValue = tagPart.substring(attributeName.length() + 1, tagPart.length() - 1);
-
-        Attribute attribute = new Attribute(attributeName, attributeValue);
-
-        return attribute;
-    }
 
     public void close() throws IOException {
-        ///////////
+        fileDao.close();
     }
 
     public void setFile(File file) {

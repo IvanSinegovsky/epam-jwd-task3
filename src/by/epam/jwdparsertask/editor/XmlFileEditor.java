@@ -51,8 +51,8 @@ public class XmlFileEditor implements Editor, Closeable {
         return editedLine.toString();
     }
 
-    public void setTempXmlFile(File tempXmlFile) {
-        this.tempXmlFile = tempXmlFile;
+    public File getTempXmlFile() {
+        return tempXmlFile;
     }
 
     @Override

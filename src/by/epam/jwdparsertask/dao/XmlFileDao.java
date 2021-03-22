@@ -50,4 +50,8 @@ public class XmlFileDao implements FileDao, Closeable {
         fileWriter = new FileWriter(file, false);
         fileWriter.write("");
     }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
 }

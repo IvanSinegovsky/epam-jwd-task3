@@ -9,4 +9,5 @@ public interface FileDao {
     void writeLines(List<String> lines, File file) throws IOException;
     void close() throws IOException;
     void cleanFile(File file) throws IOException;
+    void setFile(File file);
 }
