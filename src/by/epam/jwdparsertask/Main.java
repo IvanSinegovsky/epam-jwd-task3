@@ -8,10 +8,7 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        XmlFileEditor xmlFileEditor = new XmlFileEditor();
-        xmlFileEditor.editFile(
-                new File("C:\\Users\\Пользователь\\IdeaProjects\\epam-jwd-task3\\notes.xml"));
-        xmlFileEditor.close();
+
     }
 }
 

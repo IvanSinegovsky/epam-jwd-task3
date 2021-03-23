@@ -1,8 +1,8 @@
 package by.epam.jwdparsertask.editor;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public interface Editor {
-    void editFile(File file) throws IOException;
+    List<String> fileToEditedLines() throws IOException;
 }

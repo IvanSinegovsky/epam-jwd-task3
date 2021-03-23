@@ -2,6 +2,7 @@ package by.epam.jwdparsertask.parser;
 
 import by.epam.jwdparsertask.dao.FileDao;
 import by.epam.jwdparsertask.dao.XmlFileDao;
+import by.epam.jwdparsertask.editor.Editor;
 import by.epam.jwdparsertask.entity.Attribute;
 import by.epam.jwdparsertask.entity.Node;
 import by.epam.jwdparsertask.editor.XmlFileEditor;
@@ -22,17 +23,15 @@ public class XmlParser implements Parser {
     public Node parse() throws IOException {
         Node rootNode;
 
-        fileDao.setFile(redactFile());
-        rootNode = linesListToNode(fileDao.getLines());
+        List<String> editedLines = fileToEditedLines();
+        rootNode = linesListToNode(editedLines);
 
         return rootNode;
     }
 
-    private File redactFile() throws IOException {
-        XmlFileEditor xmlFileEditor = new XmlFileEditor();
-        xmlFileEditor.editFile(file);
-
-        return xmlFileEditor.getTempXmlFile();
+    private List<String> fileToEditedLines() throws IOException {
+        Editor editor = new XmlFileEditor(file);
+        return editor.fileToEditedLines();
     }
 
     private Node linesListToNode(List<String> lines) {

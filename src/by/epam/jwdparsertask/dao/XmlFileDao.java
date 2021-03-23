@@ -8,7 +8,6 @@ public class XmlFileDao implements FileDao, Closeable {
 
     private FileReader fileReader;
     private BufferedReader bufferedReader;
-    private FileWriter fileWriter;
     private File file;
 
     public XmlFileDao(File file) {
@@ -21,11 +20,11 @@ public class XmlFileDao implements FileDao, Closeable {
 
         List<String> fileLines = new ArrayList<>(50);
 
-        String line = bufferedReader.readLine();
+        String currentLine = bufferedReader.readLine();
 
-        while (line != null) {
-            fileLines.add(line);
-            line = bufferedReader.readLine();
+        while (currentLine != null) {
+            fileLines.add(currentLine);
+            currentLine = bufferedReader.readLine();
         }
 
         return fileLines;
@@ -34,24 +33,5 @@ public class XmlFileDao implements FileDao, Closeable {
     @Override
     public void close() throws IOException {
         bufferedReader.close();
-        fileWriter.close();
-    }
-
-    @Override
-    public void writeLines(List<String> lines, File file) throws IOException {
-        fileWriter = new FileWriter(file, true);
-
-        for(String line : lines) {
-            fileWriter.write(line);
-        }
-    }
-
-    public void cleanFile(File file) throws IOException {
-        fileWriter = new FileWriter(file, false);
-        fileWriter.write("");
-    }
-
-    public void setFile(File file) {
-        this.file = file;
     }
 }

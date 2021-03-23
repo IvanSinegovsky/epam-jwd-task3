@@ -9,24 +9,14 @@ import java.util.List;
 
 public class XmlFileEditor implements Editor, Closeable {
 
-    private File tempXmlFile;
     private FileDao fileDao;
 
-    public XmlFileEditor() {
-        tempXmlFile = new File(String.valueOf(new File("temp.xml").getAbsoluteFile()));
-    }
-
-    public void editFile(File file) throws IOException {
+    public XmlFileEditor(File file) {
         fileDao = new XmlFileDao(file);
-
-        List<String> initialLines = fileDao.getLines();
-        List<String> editedLines = linesEditor(initialLines);
-
-        fileDao.cleanFile(tempXmlFile);
-        fileDao.writeLines(editedLines, tempXmlFile);
     }
 
-    private List<String> linesEditor(List<String> initialLines) {
+    public List<String> fileToEditedLines() throws IOException {
+        List<String> initialLines = fileDao.getLines();
         List<String> editedLines = new ArrayList<>(initialLines.size());
 
         for (String initialLine : initialLines) {
@@ -49,10 +39,6 @@ public class XmlFileEditor implements Editor, Closeable {
         }
 
         return editedLine.toString();
-    }
-
-    public File getTempXmlFile() {
-        return tempXmlFile;
     }
 
     @Override
