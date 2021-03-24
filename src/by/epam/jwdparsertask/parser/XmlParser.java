@@ -3,12 +3,10 @@ package by.epam.jwdparsertask.parser;
 import by.epam.jwdparsertask.dao.FileDao;
 import by.epam.jwdparsertask.dao.XmlFileDao;
 import by.epam.jwdparsertask.editor.Editor;
-import by.epam.jwdparsertask.entity.Attribute;
 import by.epam.jwdparsertask.entity.Node;
 import by.epam.jwdparsertask.editor.XmlFileEditor;
 
 import java.io.*;
-import java.util.List;
 
 public class XmlParser implements Parser {
 
@@ -23,18 +21,18 @@ public class XmlParser implements Parser {
     public Node parse() throws IOException {
         Node rootNode;
 
-        List<String> editedLines = fileToEditedLines();
-        rootNode = linesListToNode(editedLines);
+        String editedLine = fileToEditedLines();
+        rootNode = linesListToNode(editedLine);
 
         return rootNode;
     }
 
-    private List<String> fileToEditedLines() throws IOException {
+    private String fileToEditedLines() throws IOException {
         Editor editor = new XmlFileEditor(file);
-        return editor.fileToEditedLines();
+        return editor.fileToEditedLine();
     }
 
-    private Node linesListToNode(List<String> lines) {
+    private Node linesListToNode(String line) {
         return null;
     }
 

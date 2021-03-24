@@ -13,11 +13,9 @@ public class Main {
                 = new XmlFileEditor(
                         new File("C:\\Users\\Пользователь\\IdeaProjects\\epam-jwd-task3\\notes.xml"));
 
-        List<String> lines = xmlFileEditor.fileToEditedLines();
+        String editedLine = xmlFileEditor.fileToEditedLine();
 
-        for (String line : lines) {
-            System.out.println("-" + line + "-");
-        }
+        System.out.println(editedLine);
     }
 }
 
@@ -29,5 +27,7 @@ public class Main {
 * 3) СОБРАТЬ ДЕРЕВО
 *
 * КОНСТРУКТОРЫ БЕЗ ПАРАМЕТРОВ
+*
+* use lambdas and method references
 *
 * */

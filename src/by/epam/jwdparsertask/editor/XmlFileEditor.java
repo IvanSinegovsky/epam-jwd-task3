@@ -4,7 +4,6 @@ import by.epam.jwdparsertask.dao.FileDao;
 import by.epam.jwdparsertask.dao.XmlFileDao;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class XmlFileEditor implements Editor, Closeable {
@@ -15,59 +14,22 @@ public class XmlFileEditor implements Editor, Closeable {
         fileDao = new XmlFileDao(file);
     }
 
-    public List<String> fileToEditedLines() throws IOException {
+    public String fileToEditedLine() throws IOException {
         List<String> initialLines = fileDao.getLines();
-        List<String> editedLines = new ArrayList<>(initialLines.size());
+        StringBuilder editedLine = new StringBuilder(initialLines.size() * 20);
 
         for (String initialLine : initialLines) {
-            editedLines.add(lineEditor(initialLine));
+            editedLine.append(initialLine);
         }
 
-        return editedLines;
+        return removeSpaces(editedLine.toString());
     }
 
-    //прочитать строку от < до >
-    private String linesToElement(List<String> initialLines) {
-        StringBuilder element = new StringBuilder();
-        String line;
+    private String removeSpaces(String line) {
+        String lineWithoutSpaces = line.replaceAll("\t|  ", "");
 
-        boolean hasCloseParenthesis = false;
-
-        for (int i = 0; i < initialLines.size(); i++) {
-            while (!hasCloseParenthesis) {
-                element.append(line);
-
-                if (initialLines.get(i).contains(">")) {
-                    hasCloseParenthesis = true;
-
-                    line = initialLines.get(i).;
-                }
-                i++;
-            }
-        }
-
-
-        return element.toString();
+        return lineWithoutSpaces;
     }
-
-    //записать содержимое в одну строку
-    //редактировать вышестоящую строку(избавить от пробелов и т д)
-    //контент должен быть ондельным элементом листа
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     @Override
     public void close() throws IOException {

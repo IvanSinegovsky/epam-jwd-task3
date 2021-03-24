@@ -4,5 +4,5 @@ import java.io.IOException;
 import java.util.List;
 
 public interface Editor {
-    List<String> fileToEditedLines() throws IOException;
+    String fileToEditedLine() throws IOException;
 }
