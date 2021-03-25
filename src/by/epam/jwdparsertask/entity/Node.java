@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class Node implements Serializable {
 
-    private String name;
+    private Tag tag;
     private List<Attribute> attributes;
     private List<Node> nodes;
     private String content;
@@ -14,17 +14,17 @@ public class Node implements Serializable {
     public Node() {
     }
 
-    public Node(String name) {
-        this.name = name;
+    public Node(Tag tag) {
+        this.tag = tag;
     }
 
-    public Node(String name, List<Attribute> attributes) {
-        this.name = name;
+    public Node(Tag tag, List<Attribute> attributes) {
+        this.tag = tag;
         this.attributes = attributes;
     }
 
-    public String getName() {
-        return name;
+    public Tag getTag() {
+        return tag;
     }
 
     public String getContent() {
@@ -38,7 +38,7 @@ public class Node implements Serializable {
     @Override
     public String toString() {
         return "Node{" +
-                "name='" + name + '\'' +
+                "name='" + tag + '\'' +
                 ", attributes=" + attributes +
                 ", nodes=" + nodes +
                 ", content='" + content + '\'' +
@@ -56,7 +56,7 @@ public class Node implements Serializable {
 
         Node node = (Node) o;
 
-        return Objects.equals(name, node.name)
+        return Objects.equals(tag, node.tag)
                 && Objects.equals(attributes, node.attributes)
                 && Objects.equals(nodes, node.nodes)
                 && Objects.equals(content, node.content);
@@ -64,6 +64,6 @@ public class Node implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, attributes, nodes, content);
+        return Objects.hash(tag, attributes, nodes, content);
     }
 }

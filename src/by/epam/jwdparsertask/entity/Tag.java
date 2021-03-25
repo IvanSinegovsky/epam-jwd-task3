@@ -6,12 +6,14 @@ import java.util.Objects;
 public class Tag {
 
     private String tagContent;
+    private String name;
 
     public Tag() {
     }
 
     public Tag(String tagContent) {
         this.tagContent = tagContent;
+        this.name = getNameFromTag(tagContent);
     }
 
     private int attributesQuantity() {
@@ -35,12 +37,12 @@ public class Tag {
         return attribute;
     }
 
-    public String getNameFromTag() {
+    public String getNameFromTag(String tagContent) {
         return null;
     }
 
     public boolean isEndTag() {
-        if (tagContent.contains("/>")) {
+        if (tagContent.contains("</")) {
             return true;
         }
 
@@ -50,6 +52,11 @@ public class Tag {
     public List<Attribute> getAttributesFromTag() {
         return null;
     }
+
+    public String getName() {
+        return name;
+    }
+
 
 
     public String getTagContent() {
