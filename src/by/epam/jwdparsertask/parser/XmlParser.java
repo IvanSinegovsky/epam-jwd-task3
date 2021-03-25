@@ -24,10 +24,13 @@ public class XmlParser implements Parser {
     }
 
     public Node parse() throws IOException {
-        Node rootNode = new Node();
         String editedLine = fileToEditedLines();
 
         List<Tag> tags = parseTags(editedLine);
+
+        Node rootNode = treeFromTags(tags);
+
+        setContent(editedLine, rootNode);
 
         return rootNode;
     }
@@ -52,46 +55,57 @@ public class XmlParser implements Parser {
     }
 
     private Node treeFromTags(List<Tag> tags) {
-        if (tags.isEmpty()) {
-            return null;
-        }
-
         Tag overlyingTag = tags.get(0);
         Tag underlyingTag = tags.get(1);
 
         Node rootNode = new Node(overlyingTag);
-        Node overlying = new Node(overlyingTag);
-        Node underlying = overlying;
+        rootNode.setParentNode(null);
+
+        Node overlyingNode = new Node(overlyingTag);
+
+        Node underlyingNode = overlyingNode;
+        underlyingNode.setParentNode(rootNode);
 
         for (int i = 1; i < tags.size(); i++) {
-            overlyingTag = underlyingTag;
             underlyingTag = tags.get(i);
 
+            if (!tags.get(i).isEndTag()) {
+                underlyingNode = new Node(tags.get(i));
+            } else {
+                underlyingNode = overlyingNode;
+                overlyingNode = overlyingNode.getParentNode();
 
-
-            if (!underlyingTag.isEndTag()) {    //низший не закрывающийся - спускаемся
-                overlying.addChildNode(overlying);
-            } else {                            //поднимаемся
-
+                overlyingTag = overlyingNode.getTag();
             }
         }
 
-
-        return null;
+        return rootNode;
     }
 
+    private void setContent(String line, Node rootNode) {
+        Pattern contentPattern = Pattern.compile("[^>]+<\\/?\\w*\\:*[^>]*>");
+        Matcher contentMatcher = contentPattern.matcher(line);
 
+        List<String> contents = new ArrayList<>();
 
+        while (contentMatcher.find()) {
+            contents.add(contentMatcher.group());
+        }
 
+        removeParenthesisFromContent(contents);
 
+        //TODO OBHOD PO DEREVU
+    }
 
+    private void removeParenthesisFromContent(List<String> contents) {
+        for (int i = 0; i < contents.size(); i++) {
+            contents.set(i, contents.get(i).substring(1, contents.get(i).length() - 1));
+        }
+    }
 
-
-
-
-
-
-
+    private void setAttributes(String line, Node rootNode) {
+        //TODO OBHOD PO DEREVU
+    }
 
     public void close() throws IOException {
         fileDao.close();

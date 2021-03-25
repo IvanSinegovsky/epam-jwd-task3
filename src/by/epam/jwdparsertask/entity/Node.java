@@ -7,8 +7,12 @@ import java.util.Objects;
 public class Node implements Serializable {
 
     private Tag tag;
+
     private List<Attribute> attributes;
+
     private List<Node> nodes;
+    private Node parentNode;
+
     private String content;
 
     public Node() {
@@ -33,6 +37,14 @@ public class Node implements Serializable {
 
     public void addChildNode(Node node) {
         nodes.add(node);
+    }
+
+    public void setParentNode(Node parentNode) {
+        this.parentNode = parentNode;
+    }
+
+    public Node getParentNode() {
+        return parentNode;
     }
 
     @Override
