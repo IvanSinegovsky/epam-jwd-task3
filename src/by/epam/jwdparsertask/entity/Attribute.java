@@ -10,10 +10,24 @@ public class Attribute {
     public Attribute() {
     }
 
+    public Attribute(String nameAndValue) {
+        this.name = parseName(nameAndValue);
+        this.value = parseValue(nameAndValue);
+    }
+
     public Attribute(String name, String value) {
         this.name = name;
         this.value = value;
     }
+
+    private String parseName(String nameAndValue) {
+        return nameAndValue.substring(0, nameAndValue.indexOf('='));
+    }
+
+    private String parseValue(String nameAndValue) {
+        return nameAndValue.substring(nameAndValue.indexOf('=') + 1, nameAndValue.length() - 1);
+    }
+
 
     @Override
     public String toString() {

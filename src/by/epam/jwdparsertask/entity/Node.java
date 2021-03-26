@@ -7,12 +7,8 @@ import java.util.Objects;
 public class Node implements Serializable {
 
     private Tag tag;
-
-    private List<Attribute> attributes;
-
-    private List<Node> nodes;
+    private List<Node> childNodes;
     private Node parentNode;
-
     private String content;
 
     public Node() {
@@ -22,9 +18,18 @@ public class Node implements Serializable {
         this.tag = tag;
     }
 
-    public Node(Tag tag, List<Attribute> attributes) {
-        this.tag = tag;
-        this.attributes = attributes;
+    public void addChildNode(Node node) {
+        childNodes.add(node);
+    }
+
+
+
+
+
+
+
+    public Node getParentNode() {
+        return parentNode;
     }
 
     public Tag getTag() {
@@ -35,47 +40,32 @@ public class Node implements Serializable {
         return content;
     }
 
-    public void addChildNode(Node node) {
-        nodes.add(node);
-    }
-
     public void setParentNode(Node parentNode) {
         this.parentNode = parentNode;
     }
 
-    public Node getParentNode() {
-        return parentNode;
-    }
-
     @Override
     public String toString() {
+        //TODO CHANGE TO VALID FOR OUTPUT
+
         return "Node{" +
-                "name='" + tag + '\'' +
-                ", attributes=" + attributes +
-                ", nodes=" + nodes +
+                "tag=" + tag +
+                ", childNodes=" + childNodes +
+                ", parentNode=" + parentNode +
                 ", content='" + content + '\'' +
                 '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         Node node = (Node) o;
-
-        return Objects.equals(tag, node.tag)
-                && Objects.equals(attributes, node.attributes)
-                && Objects.equals(nodes, node.nodes)
-                && Objects.equals(content, node.content);
+        return tag.equals(node.tag) && Objects.equals(childNodes, node.childNodes) && Objects.equals(parentNode, node.parentNode) && Objects.equals(content, node.content);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tag, attributes, nodes, content);
+        return Objects.hash(tag, childNodes, parentNode, content);
     }
 }
