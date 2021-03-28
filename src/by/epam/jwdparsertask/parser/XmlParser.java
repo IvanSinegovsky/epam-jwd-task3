@@ -3,9 +3,11 @@ package by.epam.jwdparsertask.parser;
 import by.epam.jwdparsertask.dao.FileDao;
 import by.epam.jwdparsertask.dao.XmlFileDao;
 import by.epam.jwdparsertask.editor.Editor;
+import by.epam.jwdparsertask.entity.Attribute;
 import by.epam.jwdparsertask.entity.Node;
 import by.epam.jwdparsertask.editor.XmlFileEditor;
 import by.epam.jwdparsertask.entity.Tag;
+import by.epam.jwdparsertask.exception.InvalidXmlFileException;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -25,12 +27,10 @@ public class XmlParser implements Parser {
 
     public Node parse() throws IOException {
         String editedLine = fileToEditedLines();
-
         List<Tag> tags = parseTags(editedLine);
-
         Node rootNode = treeFromTags(tags);
-
         setContent(editedLine, rootNode);
+        setAttributes(tags, rootNode);
 
         return rootNode;
     }
@@ -55,27 +55,26 @@ public class XmlParser implements Parser {
     }
 
     private Node treeFromTags(List<Tag> tags) {
-        Tag overlyingTag = tags.get(0);
-        Tag underlyingTag = tags.get(1);
+        if (tags.isEmpty()) {
+            throw new InvalidXmlFileException("Invalid xml-file syntax");
+        }
 
-        Node rootNode = new Node(overlyingTag);
+        Node rootNode = new Node(tags.get(0));
         rootNode.setParentNode(null);
 
-        Node overlyingNode = new Node(overlyingTag);
+        Node parentNode = new Node(tags.get(0));
+        Node childNode = new Node(tags.get(1));
 
-        Node underlyingNode = overlyingNode;
-        underlyingNode.setParentNode(rootNode);
-
-        for (int i = 1; i < tags.size(); i++) {
-            underlyingTag = tags.get(i);
-
-            if (!tags.get(i).isEndTag()) {
-                underlyingNode = new Node(tags.get(i));
+        for (int i = 0; i < tags.size(); i++) {
+            if (childNode.getTag().isEndTag()) {
+                //down
+                childNode = parentNode;
+                parentNode = parentNode.getParentNode();
             } else {
-                underlyingNode = overlyingNode;
-                overlyingNode = overlyingNode.getParentNode();
-
-                overlyingTag = overlyingNode.getTag();
+                //up
+                parentNode = childNode;
+                childNode = new Node(tags.get(i));
+                parentNode.addChildNode(childNode);
             }
         }
 
@@ -83,28 +82,26 @@ public class XmlParser implements Parser {
     }
 
     private void setContent(String line, Node rootNode) {
+        String contentAndEndTag;
         Pattern contentPattern = Pattern.compile("[^>]+<\\/?\\w*\\:*[^>]*>");
         Matcher contentMatcher = contentPattern.matcher(line);
 
-        List<String> contents = new ArrayList<>();
-
         while (contentMatcher.find()) {
-            contents.add(contentMatcher.group());
-        }
-
-        removeParenthesisFromContent(contents);
-
-        //TODO OBHOD PO DEREVU
-    }
-
-    private void removeParenthesisFromContent(List<String> contents) {
-        for (int i = 0; i < contents.size(); i++) {
-            contents.set(i, contents.get(i).substring(1, contents.get(i).length() - 1));
+            contentAndEndTag = contentMatcher.group();
+            rootNode.searchNodeToSetContent(extractTag(contentAndEndTag), contentAndEndTag);
         }
     }
 
-    private void setAttributes(String line, Node rootNode) {
-        //TODO OBHOD PO DEREVU
+    private Tag extractTag(String line) {
+        Tag tag = new Tag(line);
+        return tag;
+}
+
+    private void setAttributes(List<Tag> tags, Node rootNode) {
+        for (Tag tag : tags) {
+            tag.getAttributesFromTag();
+            rootNode.searchNodeToSetAttributes(tag, tag.getAttributes());
+        }
     }
 
     public void close() throws IOException {

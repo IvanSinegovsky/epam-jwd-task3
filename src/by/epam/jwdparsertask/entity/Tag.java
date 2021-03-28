@@ -54,7 +54,7 @@ public class Tag {
 
     public void getAttributesFromTag() {
         //TODO TEST THIS METHOD
-        Pattern tagNamePattern = Pattern.compile("(\\w|=)");
+        Pattern tagNamePattern = Pattern.compile("(^\\s+|=)");
         Matcher matcher = tagNamePattern.matcher(wholeTag);
 
         while (matcher.find()) {
@@ -66,7 +66,9 @@ public class Tag {
         }
     }
 
-
+    public List<Attribute> getAttributes() {
+        return attributes;
+    }
 
     public String getName() {
         return name;
@@ -78,6 +80,10 @@ public class Tag {
 
     public void setWholeTag(String wholeTag) {
         this.wholeTag = wholeTag;
+    }
+
+    public void setAttributes(List<Attribute> attributes) {
+        this.attributes = attributes;
     }
 
     @Override
