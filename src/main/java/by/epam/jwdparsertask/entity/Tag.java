@@ -21,18 +21,6 @@ public class Tag {
         parseName();
     }
 
-    private int attributesQuantity() {
-        int attributesQuantity = 0;
-
-        for (int i = 0; i < wholeTag.length(); i++) {
-            if (wholeTag.charAt(i) == '=') {
-                attributesQuantity++;
-            }
-        }
-
-        return attributesQuantity;
-    }
-
     private void parseName() {
         Pattern tagNamePattern = Pattern.compile("\\w+");
         Matcher matcher = tagNamePattern.matcher(wholeTag);
@@ -54,6 +42,7 @@ public class Tag {
 
     public void getAttributesFromTag() {
         //TODO TEST THIS METHOD
+        //TODO MOVE THIS METHOD EXECUTION TO CONSTRUCTOR AND MAKE IT PRIVATE
         Pattern tagNamePattern = Pattern.compile("(^\\s+|=)");
         Matcher matcher = tagNamePattern.matcher(wholeTag);
 

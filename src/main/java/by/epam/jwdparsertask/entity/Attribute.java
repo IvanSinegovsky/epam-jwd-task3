@@ -21,10 +21,12 @@ public class Attribute {
     }
 
     private String parseName(String nameAndValue) {
+        //TODO FIX
         return nameAndValue.substring(0, nameAndValue.indexOf('='));
     }
 
     private String parseValue(String nameAndValue) {
+        //TODO FIX
         return nameAndValue.substring(nameAndValue.indexOf('=') + 1, nameAndValue.length() - 1);
     }
 
