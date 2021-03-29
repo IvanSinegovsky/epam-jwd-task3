@@ -23,8 +23,8 @@ public class XmlFileDao implements FileDao, Closeable {
         String currentLine = bufferedReader.readLine();
 
         while (currentLine != null) {
-            fileLines.add(currentLine);
             currentLine = bufferedReader.readLine();
+            fileLines.add(currentLine);//todo swap
         }
 
         return fileLines;

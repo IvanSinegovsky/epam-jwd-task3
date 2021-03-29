@@ -7,8 +7,7 @@ public class Attribute {
     private String name;
     private String value;
 
-    public Attribute() {
-    }
+    public Attribute() { }
 
     public Attribute(String nameAndValue) {
         this.name = parseName(nameAndValue);
@@ -21,13 +20,11 @@ public class Attribute {
     }
 
     private String parseName(String nameAndValue) {
-        //TODO FIX
         return nameAndValue.substring(0, nameAndValue.indexOf('='));
     }
 
     private String parseValue(String nameAndValue) {
-        //TODO FIX
-        return nameAndValue.substring(nameAndValue.indexOf('=') + 1, nameAndValue.length() - 1);
+        return nameAndValue.substring(nameAndValue.indexOf('=') + 1, nameAndValue.length());
     }
 
 

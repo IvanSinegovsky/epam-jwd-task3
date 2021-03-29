@@ -12,23 +12,13 @@ public class TagTest {
     @Test
     void isEndTag() {
         Tag tag = new Tag("<note>");
-        boolean actualResult = tag.isEndTag();
+        boolean actualResult = tag.getIsEndTag();
         boolean expectedResult = false;
         Assertions.assertEquals(expectedResult, actualResult);
 
         tag = new Tag("</note>");
-        actualResult = tag.isEndTag();
+        actualResult = tag.getIsEndTag();
         expectedResult = true;
-        Assertions.assertEquals(expectedResult, actualResult);
-    }
-
-    @Test
-    void getAttributesFromTag() {
-        Tag tag = new Tag("<note id=\"1\">");
-        tag.getAttributesFromTag();
-        List<Attribute> expectedResult = tag.getAttributes();
-        List<Attribute> actualResult = new ArrayList<>();
-        actualResult.add(new Attribute("id=\"1\""));
         Assertions.assertEquals(expectedResult, actualResult);
     }
 

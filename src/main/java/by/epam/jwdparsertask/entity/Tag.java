@@ -2,6 +2,7 @@ package by.epam.jwdparsertask.entity;
 
 import by.epam.jwdparsertask.exception.InvalidXmlFileException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -9,19 +10,19 @@ import java.util.regex.Pattern;
 
 public class Tag {
 
-    private String wholeTag;
     private String name;
-    private List<Attribute> attributes;
+    private List<Attribute> attributes = new ArrayList<>();
+    private boolean isEndTag;
 
-    public Tag() {
-    }
+    public Tag() { }
 
     public Tag(String wholeTag) {
-        this.wholeTag = wholeTag;
-        parseName();
+        this.name = parseName(wholeTag);
+        this.attributes = getAttributesFromTag(wholeTag);
+        this.isEndTag = isEndTag(wholeTag);
     }
 
-    private void parseName() {
+    private String parseName(String wholeTag) {
         Pattern tagNamePattern = Pattern.compile("\\w+");
         Matcher matcher = tagNamePattern.matcher(wholeTag);
 
@@ -29,10 +30,10 @@ public class Tag {
             throw new InvalidXmlFileException("Invalid tags syntax");
         }
 
-        this.name =  matcher.group();
+        return matcher.group();
     }
 
-    public boolean isEndTag() {
+    private boolean isEndTag(String wholeTag) {
         if (wholeTag.contains("</")) {
             return true;
         }
@@ -40,19 +41,20 @@ public class Tag {
         return false;
     }
 
-    public void getAttributesFromTag() {
-        //TODO TEST THIS METHOD
-        //TODO MOVE THIS METHOD EXECUTION TO CONSTRUCTOR AND MAKE IT PRIVATE
+    private List<Attribute> getAttributesFromTag(String wholeTag) {
+        List<Attribute> attributesFromTag = new ArrayList<>();
         Pattern tagNamePattern = Pattern.compile("(^\\s+|=)");
         Matcher matcher = tagNamePattern.matcher(wholeTag);
 
         while (matcher.find()) {
-            attributes.add(new Attribute(matcher.group()));
+            attributesFromTag.add(new Attribute(matcher.group()));
         }
 
-        if (attributes.isEmpty()) {
-            throw new InvalidXmlFileException("Invalid attributes syntax");
-        }
+        return attributesFromTag;
+    }
+
+    public boolean getIsEndTag() {
+        return isEndTag;
     }
 
     public List<Attribute> getAttributes() {
@@ -61,14 +63,6 @@ public class Tag {
 
     public String getName() {
         return name;
-    }
-
-    public String getWholeTag() {
-        return wholeTag;
-    }
-
-    public void setWholeTag(String wholeTag) {
-        this.wholeTag = wholeTag;
     }
 
     public void setAttributes(List<Attribute> attributes) {
@@ -80,18 +74,17 @@ public class Tag {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tag tag = (Tag) o;
-        return Objects.equals(wholeTag, tag.wholeTag) && Objects.equals(name, tag.name) && Objects.equals(attributes, tag.attributes);
+        return  Objects.equals(name, tag.name) && Objects.equals(attributes, tag.attributes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(wholeTag, name, attributes);
+        return Objects.hash(name, attributes);
     }
 
     @Override
     public String toString() {
-        return "Tag{" +
-                "wholeTag='" + wholeTag + '\'' +
+        return "Tag{" + '\'' +
                 ", name='" + name + '\'' +
                 ", attributes=" + attributes +
                 '}';

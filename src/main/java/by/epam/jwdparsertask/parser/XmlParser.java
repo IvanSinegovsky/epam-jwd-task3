@@ -29,6 +29,9 @@ public class XmlParser implements Parser {
         String editedLine = fileToEditedLines();
         List<Tag> tags = parseTags(editedLine);
         Node rootNode = treeFromTags(tags);
+
+        System.out.println(rootNode);
+
         setContent(editedLine, rootNode);
         setAttributes(tags, rootNode);
 
@@ -60,13 +63,15 @@ public class XmlParser implements Parser {
         }
 
         Node rootNode = new Node(tags.get(0));
-        rootNode.setParentNode(null);
 
-        Node parentNode = new Node(tags.get(0));
-        Node childNode = new Node(tags.get(1));
+        Node parentNode = new Node(tags.get(1));
+        parentNode.setParentNode(rootNode);
 
-        for (int i = 0; i < tags.size(); i++) {
-            if (childNode.getTag().isEndTag()) {
+        Node childNode = new Node(tags.get(2));
+        childNode.setParentNode(parentNode);
+
+        for (int i = 0; i < tags.size() - 1 ; i++) {
+            if (childNode.getTag().getIsEndTag()) {
                 //down
                 childNode = parentNode;
                 parentNode = parentNode.getParentNode();
@@ -99,7 +104,6 @@ public class XmlParser implements Parser {
 
     private void setAttributes(List<Tag> tags, Node rootNode) {
         for (Tag tag : tags) {
-            tag.getAttributesFromTag();
             rootNode.searchNodeToSetAttributes(tag, tag.getAttributes());
         }
     }

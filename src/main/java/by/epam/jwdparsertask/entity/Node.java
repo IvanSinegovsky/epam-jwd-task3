@@ -10,12 +10,11 @@ import java.util.Objects;
 public class Node implements Serializable {
 
     private Tag tag;
-    private List<Node> childNodes;
+    private List<Node> childNodes = new ArrayList<>();
     private Node parentNode;
     private String content;
 
-    public Node() {
-    }
+    public Node() { }
 
     public Node(Tag tag) {
         this.tag = tag;
@@ -23,6 +22,9 @@ public class Node implements Serializable {
 
     public void addChildNode(Node node) {
         childNodes.add(node);
+        if (node.getParentNode() == null) {
+            node.setParentNode(this);
+        }
     }
 
     public void searchNodeToSetContent(Tag tagToCompare, String content) {
@@ -68,20 +70,29 @@ public class Node implements Serializable {
         return content;
     }
 
+    public List<Node> getChildNodes() {
+        return childNodes;
+    }
+
     public void setParentNode(Node parentNode) {
+        if (!parentNode.getChildNodes().contains(this)){
+            parentNode.addChildNode(this);
+        }
+
         this.parentNode = parentNode;
     }
 
     @Override
     public String toString() {
-        //TODO CHANGE TO VALID FOR OUTPUT
-
-        return "Node{" +
-                "tag=" + tag +
-                ", childNodes=" + childNodes +
-                ", parentNode=" + parentNode +
-                ", content='" + content + '\'' +
-                '}';
+        if (content != null) {
+            return "{\n\tNode with tag " + tag.getName()
+                    + "\thas content " + content
+                    + "\thas child nodes = " + childNodes.toString()
+                    + "\n}";
+        }
+        return "{\n\tNode with tag " + tag.getName()
+                + "\twithout content has child nodes = " + childNodes.toString()
+                + "\n}";
     }
 
     @Override
