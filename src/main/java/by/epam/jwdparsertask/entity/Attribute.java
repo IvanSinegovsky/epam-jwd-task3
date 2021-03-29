@@ -24,7 +24,7 @@ public class Attribute {
     }
 
     private String parseValue(String nameAndValue) {
-        return nameAndValue.substring(nameAndValue.indexOf('=') + 1, nameAndValue.length());
+        return nameAndValue.substring(nameAndValue.indexOf('=') + 1);
     }
 
 

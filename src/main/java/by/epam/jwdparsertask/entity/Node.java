@@ -36,18 +36,14 @@ public class Node implements Serializable {
     }
 
     private Node searchNodeByTag(Tag tagToCompare) {
-        int nullChildrenQuantity = 0;
-
-        for (Node childNode : childNodes) {
-            if (nullChildrenQuantity == childNodes.size()) {
-                throw new InvalidXmlFileException("Invalid xml-file syntax");
-            } else if (childNodes.isEmpty() || childNode != null) {
-                if (tagToCompare.equals(tag)) {
-                    return childNode;
+        for (int i = 0; i < childNodes.size(); i++) {
+            if (tagToCompare.equals(childNodes.get(i).getTag())) {
+                return childNodes.get(i);
+            } else if (i == childNodes.size() - 1) {
+                //вызов метода для внуков
+                for (int j = 0; j < childNodes.size(); j++) {
+                    childNodes.get(j).searchNodeByTag(tagToCompare);
                 }
-                searchNodeByTag(tagToCompare);
-            } else {
-                nullChildrenQuantity++;
             }
         }
 

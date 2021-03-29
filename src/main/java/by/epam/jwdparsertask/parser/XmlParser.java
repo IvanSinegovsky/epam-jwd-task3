@@ -29,9 +29,6 @@ public class XmlParser implements Parser {
         String editedLine = fileToEditedLines();
         List<Tag> tags = parseTags(editedLine);
         Node rootNode = treeFromTags(tags);
-
-        System.out.println(rootNode);
-
         setContent(editedLine, rootNode);
         setAttributes(tags, rootNode);
 
