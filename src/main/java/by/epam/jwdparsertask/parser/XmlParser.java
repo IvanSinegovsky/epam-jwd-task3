@@ -3,11 +3,9 @@ package by.epam.jwdparsertask.parser;
 import by.epam.jwdparsertask.dao.FileDao;
 import by.epam.jwdparsertask.dao.XmlFileDao;
 import by.epam.jwdparsertask.editor.Editor;
-import by.epam.jwdparsertask.entity.Attribute;
 import by.epam.jwdparsertask.entity.Node;
 import by.epam.jwdparsertask.editor.XmlFileEditor;
 import by.epam.jwdparsertask.entity.Tag;
-import by.epam.jwdparsertask.exception.InvalidXmlFileException;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -27,8 +25,8 @@ public class XmlParser implements Parser {
     public Node parse() throws IOException {
         String editedLine = fileToEditedLines();
         List<Tag> tags = parseTags(editedLine);
-        Node rootNode = treeFromTags(tags);
-       // setContent(editedLine, rootNode);
+        List<String> content = extractContent(editedLine);
+        Node rootNode = treeFromTags(tags, content);
 
         return rootNode;
     }
@@ -52,7 +50,7 @@ public class XmlParser implements Parser {
         return tags;
     }
 
-    private Node treeFromTags(List<Tag> tags) {
+    private Node treeFromTags(List<Tag> tags, List<String> content) {
         Node rootNode = new Node(tags.get(0));
 
         Node parentNode = new Node(tags.get(1));
@@ -61,14 +59,15 @@ public class XmlParser implements Parser {
         Node childNode = new Node(tags.get(2));
         childNode.setParentNode(parentNode);
 
-        for (int i = 3; i < tags.size() - 1 ; i++) {
+        for (int i = 3, j = 0; i < tags.size()  && j < content.size(); i++) {
             if (tags.get(i).getIsEndTag()) {
-                //down
-                //todo maybe here we can set content
+                //go down the tree
+                childNode.setContent(content.get(j).substring(0, content.get(j).length() - 1));
+                j++;
                 childNode = parentNode;
                 parentNode = parentNode.getParentNode();
             } else {
-                //up
+                //go up the tree
                 parentNode = childNode;
                 childNode = new Node(tags.get(i));
                 parentNode.addChildNode(childNode);
@@ -78,15 +77,17 @@ public class XmlParser implements Parser {
         return rootNode;
     }
 
-    private void setContent(String line, Node rootNode) {
-        String contentAndEndTag;
-        Pattern contentPattern = Pattern.compile("[^>]+<\\/?\\w*\\:*[^>]*>");
+    private List<String> extractContent(String line) {
+        List<String> content = new ArrayList<>();
+
+        Pattern contentPattern = Pattern.compile("[^>]+<");
         Matcher contentMatcher = contentPattern.matcher(line);
 
         while (contentMatcher.find()) {
-            contentAndEndTag = contentMatcher.group();
-            rootNode.searchNodeToSetContent(extractTag(contentAndEndTag), contentAndEndTag);
+            content.add(contentMatcher.group());
         }
+
+        return content;
     }
 
     private Tag extractTag(String line) {

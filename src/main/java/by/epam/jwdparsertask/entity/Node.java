@@ -1,7 +1,5 @@
 package by.epam.jwdparsertask.entity;
 
-import by.epam.jwdparsertask.exception.InvalidXmlFileException;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,29 +29,6 @@ public class Node implements Serializable {
         if (node.getParentNode() == null) {
             node.setParentNode(this);
         }
-    }
-
-    public void searchNodeToSetContent(Tag tagToCompare, String content) {
-        searchNodeByTag(tagToCompare).setContent(content);
-    }
-
-    public void searchNodeToSetAttributes(Tag tagToCompare, List<Attribute> attributes) {
-        searchNodeByTag(tagToCompare).getTag().setAttributes(attributes);
-    }
-
-    private Node searchNodeByTag(Tag tagToCompare) {
-        for (int i = 0; i < childNodes.size(); i++) {
-            if (tagToCompare.equals(childNodes.get(i).getTag())) {
-                return childNodes.get(i);
-            } else if (i == childNodes.size() - 1) {
-                //вызов метода для внуков
-                for (int j = 0; j < childNodes.size(); j++) {
-                    childNodes.get(j).searchNodeByTag(tagToCompare);
-                }
-            }
-        }
-
-        return null;
     }
 
     public void setContent(String content) {
