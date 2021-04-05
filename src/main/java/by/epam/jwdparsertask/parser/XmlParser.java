@@ -28,7 +28,7 @@ public class XmlParser implements Parser {
         String editedLine = fileToEditedLines();
         List<Tag> tags = parseTags(editedLine);
         Node rootNode = treeFromTags(tags);
-        setContent(editedLine, rootNode);
+       // setContent(editedLine, rootNode);
 
         return rootNode;
     }
@@ -53,10 +53,6 @@ public class XmlParser implements Parser {
     }
 
     private Node treeFromTags(List<Tag> tags) {
-        if (tags.isEmpty()) {
-            throw new InvalidXmlFileException("Invalid xml-file syntax");
-        }
-
         Node rootNode = new Node(tags.get(0));
 
         Node parentNode = new Node(tags.get(1));
@@ -65,9 +61,10 @@ public class XmlParser implements Parser {
         Node childNode = new Node(tags.get(2));
         childNode.setParentNode(parentNode);
 
-        for (int i = 0; i < tags.size() - 1 ; i++) {
-            if (childNode.getTag().getIsEndTag()) {
+        for (int i = 3; i < tags.size() - 1 ; i++) {
+            if (tags.get(i).getIsEndTag()) {
                 //down
+                //todo maybe here we can set content
                 childNode = parentNode;
                 parentNode = parentNode.getParentNode();
             } else {
