@@ -48,7 +48,7 @@ public class Tag {
 
     private List<Attribute> getAttributesFromTag(String wholeTag) {
         List<Attribute> attributesFromTag = new ArrayList<>();
-        Pattern tagNamePattern = Pattern.compile("(^\\s+|=)");
+        Pattern tagNamePattern = Pattern.compile("\\s\\S+=\\S+");
         Matcher matcher = tagNamePattern.matcher(wholeTag);
 
         while (matcher.find()) {

@@ -29,7 +29,6 @@ public class XmlParser implements Parser {
         List<Tag> tags = parseTags(editedLine);
         Node rootNode = treeFromTags(tags);
         setContent(editedLine, rootNode);
-        setAttributes(tags, rootNode);
 
         return rootNode;
     }
@@ -96,12 +95,6 @@ public class XmlParser implements Parser {
     private Tag extractTag(String line) {
         Tag tag = new Tag(line);
         return tag;
-}
-
-    private void setAttributes(List<Tag> tags, Node rootNode) {
-        for (Tag tag : tags) {
-            rootNode.searchNodeToSetAttributes(tag, tag.getAttributes());
-        }
     }
 
     public void close() throws IOException {
