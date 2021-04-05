@@ -7,7 +7,6 @@ import java.io.*;
 import java.util.List;
 
 public class XmlFileEditor implements Editor, Closeable {
-
     private FileDao fileDao;
 
     public XmlFileEditor(File file) {

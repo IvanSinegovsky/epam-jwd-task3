@@ -16,7 +16,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class XmlParser implements Parser {
-
     private File file;
     private FileDao fileDao;
 

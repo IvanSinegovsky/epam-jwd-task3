@@ -9,7 +9,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Tag {
-
     private String name;
     private List<Attribute> attributes = new ArrayList<>();
     private boolean isEndTag;
@@ -20,6 +19,12 @@ public class Tag {
         this.name = parseName(wholeTag);
         this.attributes = getAttributesFromTag(wholeTag);
         this.isEndTag = isEndTag(wholeTag);
+    }
+
+    public Tag(String name, List<Attribute> attributes, boolean isEndTag) {
+        this.name = name;
+        this.attributes = attributes;
+        this.isEndTag = isEndTag;
     }
 
     private String parseName(String wholeTag) {
@@ -70,23 +75,24 @@ public class Tag {
     }
 
     @Override
+    public String toString() {
+        return "Tag{" +
+                "name='" + name + '\'' +
+                ", attributes=" + attributes +
+                ", isEndTag=" + isEndTag +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tag tag = (Tag) o;
-        return  Objects.equals(name, tag.name) && Objects.equals(attributes, tag.attributes);
+        return isEndTag == tag.isEndTag && Objects.equals(name, tag.name) && Objects.equals(attributes, tag.attributes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, attributes);
-    }
-
-    @Override
-    public String toString() {
-        return "Tag{" + '\'' +
-                ", name='" + name + '\'' +
-                ", attributes=" + attributes +
-                '}';
+        return Objects.hash(name, attributes, isEndTag);
     }
 }

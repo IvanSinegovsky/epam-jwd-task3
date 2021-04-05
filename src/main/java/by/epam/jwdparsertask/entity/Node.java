@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class Node implements Serializable {
-
     private Tag tag;
     private List<Node> childNodes = new ArrayList<>();
     private Node parentNode;
@@ -18,6 +17,13 @@ public class Node implements Serializable {
 
     public Node(Tag tag) {
         this.tag = tag;
+    }
+
+    public Node(Tag tag, List<Node> childNodes, Node parentNode, String content) {
+        this.tag = tag;
+        this.childNodes = childNodes;
+        this.parentNode = parentNode;
+        this.content = content;
     }
 
     public void addChildNode(Node node) {
@@ -80,15 +86,12 @@ public class Node implements Serializable {
 
     @Override
     public String toString() {
-        if (content != null) {
-            return "{\n\tNode with tag " + tag.getName()
-                    + "\thas content " + content
-                    + "\thas child nodes = " + childNodes.toString()
-                    + "\n}";
-        }
-        return "{\n\tNode with tag " + tag.getName()
-                + "\twithout content has child nodes = " + childNodes.toString()
-                + "\n}";
+        return "Node{" +
+                "tag=" + tag +
+                ", childNodes=" + childNodes +
+                ", parentNode=" + parentNode +
+                ", content='" + content + '\'' +
+                '}';
     }
 
     @Override
@@ -96,7 +99,7 @@ public class Node implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Node node = (Node) o;
-        return tag.equals(node.tag) && Objects.equals(childNodes, node.childNodes) && Objects.equals(parentNode, node.parentNode) && Objects.equals(content, node.content);
+        return Objects.equals(tag, node.tag) && Objects.equals(childNodes, node.childNodes) && Objects.equals(parentNode, node.parentNode) && Objects.equals(content, node.content);
     }
 
     @Override
