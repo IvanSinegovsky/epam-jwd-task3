@@ -13,6 +13,10 @@ public class Tag {
     private List<Attribute> attributes = new ArrayList<>();
     private boolean isEndTag;
 
+    private static final String TAG_NAME_PATTERN = "\\w+";
+    private static final String ATTRIBUTES_PATTERN = "\\s\\S+=\\S+";
+    private static final String TAG_PATTERN = "<\\/?\\w*\\:*[^>]*>";
+
     public Tag() { }
 
     public Tag(String wholeTag) {
@@ -27,8 +31,21 @@ public class Tag {
         this.isEndTag = isEndTag;
     }
 
+    public static List<Tag> parseTags(String line) {
+        List<Tag> tags = new ArrayList<>();
+
+        Pattern tagPattern = Pattern.compile(Tag.TAG_PATTERN);
+        Matcher tagMatcher = tagPattern.matcher(line);
+
+        while (tagMatcher.find()) {
+            tags.add(new Tag(tagMatcher.group()));
+        }
+
+        return tags;
+    }
+
     private String parseName(String wholeTag) {
-        Pattern tagNamePattern = Pattern.compile("\\w+");
+        Pattern tagNamePattern = Pattern.compile(TAG_NAME_PATTERN);
         Matcher matcher = tagNamePattern.matcher(wholeTag);
 
         if (!matcher.find()) {
@@ -48,8 +65,8 @@ public class Tag {
 
     private List<Attribute> getAttributesFromTag(String wholeTag) {
         List<Attribute> attributesFromTag = new ArrayList<>();
-        Pattern tagNamePattern = Pattern.compile("\\s\\S+=\\S+");
-        Matcher matcher = tagNamePattern.matcher(wholeTag);
+        Pattern attributesPattern = Pattern.compile(ATTRIBUTES_PATTERN);
+        Matcher matcher = attributesPattern.matcher(wholeTag);
 
         while (matcher.find()) {
             attributesFromTag.add(new Attribute(matcher.group()));

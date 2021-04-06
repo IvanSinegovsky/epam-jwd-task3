@@ -15,5 +15,7 @@ public class Main {
         );
 
         Node root = parser.parse();
+
+        parser.close();
     }
 }

@@ -24,7 +24,7 @@ public class XmlParser implements Parser {
 
     public Node parse() throws IOException {
         String editedLine = fileToEditedLines();
-        List<Tag> tags = parseTags(editedLine);
+        List<Tag> tags = Tag.parseTags(editedLine);
         List<String> content = extractContent(editedLine);
         Node rootNode = treeFromTags(tags, content);
 
@@ -35,19 +35,6 @@ public class XmlParser implements Parser {
         Editor editor = new XmlFileEditor(file);
 
         return editor.fileToEditedLine();
-    }
-
-    private List<Tag> parseTags(String line) {
-        List<Tag> tags = new ArrayList<>();
-
-        Pattern tagPattern = Pattern.compile("<\\/?\\w*\\:*[^>]*>");
-        Matcher tagMatcher = tagPattern.matcher(line);
-
-        while (tagMatcher.find()) {
-            tags.add(new Tag(tagMatcher.group()));
-        }
-
-        return tags;
     }
 
     private Node treeFromTags(List<Tag> tags, List<String> content) {
