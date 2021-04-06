@@ -6,5 +6,5 @@ import java.io.IOException;
 
 public interface Parser {
    Node parse() throws IOException;
-   public void close() throws IOException;
+   void close() throws IOException;
 }

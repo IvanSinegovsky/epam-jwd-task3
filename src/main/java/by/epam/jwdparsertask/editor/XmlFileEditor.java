@@ -9,7 +9,7 @@ import java.util.List;
 public class XmlFileEditor implements Editor, Closeable {
     private FileDao fileDao;
 
-    public XmlFileEditor(File file) {
+    public XmlFileEditor(File file) throws IOException {
         fileDao = new XmlFileDao(file);
     }
 

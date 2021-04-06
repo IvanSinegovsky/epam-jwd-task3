@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class XmlParser implements Parser {
+public class XmlParser implements Parser, Closeable{
     private File file;
     private FileDao fileDao;
 
-    public XmlParser(File file) {
+    public XmlParser(File file) throws IOException {
         this.file = file;
         this.fileDao = new XmlFileDao(file);
     }

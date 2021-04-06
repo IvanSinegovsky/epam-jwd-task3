@@ -59,6 +59,48 @@ public class Node implements Serializable {
         this.parentNode = parentNode;
     }
 
+    public void output() {
+        treeOutput(new StringBuilder(), 1);
+    }
+
+    /**
+     * Provides tree output like:
+     *
+     * 	Node tc has no content and has 1 child(ren):
+     * 			Node note has no content and has 4 child(ren):
+     * 				Node to has content "Вася" and 0 child(ren):
+     * 				Node from has content "Света" and 0 child(ren):
+     * 				Node heading has content "Напоминание" and 0 child(ren):
+     * 				Node body has content "Позвони мне завтра!" and 0 child(ren):
+     */
+    private void treeOutput(StringBuilder tabulations, int counter) {
+        for (int i = 0; i < counter; i++) {
+            tabulations.append('\t');
+        }
+
+        if (content != null) {
+            System.out.println(tabulations + "Node " + tag.getName() + " has content \"" + content + "\" and "
+                    + childNodes.size() + " child(ren):");
+        } else {
+            System.out.println(tabulations + "Node " + tag.getName() + " has no content and has "
+                    + childNodes.size() + " child(ren):");
+        }
+
+        for (int i = 0; i < childNodes.size(); i++) {
+            if (i == childNodes.size() - 1) {
+                counter++;
+            } else {
+                counter--;
+            }
+
+            childNodes.get(i).treeOutput(tabulations, counter);
+        }
+
+        if (childNodes.size() == 0) {
+            return;
+        }
+    }
+
     @Override
     public String toString() {
         return "Node{" +

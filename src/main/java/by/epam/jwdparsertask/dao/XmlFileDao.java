@@ -9,21 +9,24 @@ public class XmlFileDao implements FileDao, Closeable {
     private BufferedReader bufferedReader;
     private File file;
 
-    public XmlFileDao(File file) {
+    public XmlFileDao(File file) throws IOException {
         this.file = file;
+        this.fileReader = new FileReader(file);
+        this.bufferedReader = new BufferedReader(fileReader);
     }
 
     public List<String> getLines() throws IOException {
-        fileReader = new FileReader(file);
-        bufferedReader = new BufferedReader(fileReader);
 
         List<String> fileLines = new ArrayList<>(50);
 
         String currentLine = bufferedReader.readLine();
 
         while (currentLine != null) {
+            if (!currentLine.contains("<?")){
+                fileLines.add(currentLine);
+            }
+
             currentLine = bufferedReader.readLine();
-            fileLines.add(currentLine);//todo swap
         }
 
         return fileLines;
