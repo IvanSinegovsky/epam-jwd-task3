@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class XmlFileDao implements FileDao, Closeable {
+public class XmlFileDao implements FileDao {
     private FileReader fileReader;
     private BufferedReader bufferedReader;
     private File file;
